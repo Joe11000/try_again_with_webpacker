@@ -1,0 +1,121 @@
+react_with_jest() {
+  rails new try_again_with_webpack --webpack=react -T --skip-coffee -D postgresql
+  cd try_again_with_webpack
+  echo "gem 'rspec-rails'" >> Gemfile
+  spring stop
+  bundle install
+  rails g rspec:install
+  spring start
+
+  yarn add --dev jest babel-jest babel-preset-env
+
+  mkdir -p spec/javascript/packs
+
+  echo "test('adds 1 + 2 to equal 3', () => {
+    expect(1).toEqual(1);
+  });" > spec/javascript/packs/example.spec.js
+
+
+  # add to package json
+    sed -i '' -e '$ d' package.json # remove last line of file in package.json
+    echo '
+        ,"jest": {
+          "roots": [
+            "spec/javascript"
+          ],
+          "moduleDirectories": [
+            "node_modules",
+            "app/javascript"
+          ]
+        }
+      }' >> ./package.json
+
+  yarn jest
+}
+
+
+
+
+
+# trying to set up enzyme with assortment of suggestions
+  yarn add react@16 react-dom@16
+  yarn add --dev enzyme enzyme-adapter-react-16
+  yarn add enzyme enzyme-adapter-react-16 jest-enzyme
+
+  echo "export default Hello;" >> app/javascript/packs/hello_react.jsx
+
+  echo "import React from 'react'
+import { shallow, mount, render } from 'enzyme'
+import HelloReact from 'packs/hello_react'
+" | cat - spec/javascript/packs/example.spec.js > /tmp/out && mv /tmp/out spec/javascript/packs/hello.spec.js
+
+  echo "import { configure } from 'enzyme';
+  import Adapter from 'enzyme-adapter-react-16';
+
+  configure({ adapter: new Adapter() });
+  " > ./spec/javascript/setupTests.js
+
+
+  # yarn add --dev enzyme enzyme-adapter-react-16
+  yarn add --dev babel-jest regenerator-runtime
+echo '{
+  "presets": [
+    [
+      {
+        "env": {
+          "test": {
+            "presets": [["env"], "react"]
+          }
+        }
+      }
+    ],
+    "react",
+  ],
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-object-rest-spread",
+    [
+      "transform-class-properties",
+      {
+        "spec": true
+      }
+    ]
+  ]
+}
+
+' > .babelrc
+
+
+
+
+
+
+
+
+
+
+
+}
+  # "jest": {
+  #   "setupTestFrameworkScriptFile": "./spec/javascript/setupTests.js"
+  # }
+  # /* On your .babelrc */
+
+  # {
+  #   "presets": [
+  #     "es2015",
+  #     ...
+  #   ]
+  # }
+
+
+
+  # yarn add --dev babel-jest babel-core regenerator-runtime
+
+  # # maybe next steps
+
+  # echo "import Enzyme from 'enzyme'
+  # import EnzymeAdapter from 'enzyme-adapter-react-16'
+
+  # Enzyme.configure({ adapter: new EnzymeAdapter() })" > ./spec/javascript/setupTests.js
+
