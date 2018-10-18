@@ -1,4 +1,4 @@
-react_with_jest() {
+This first part sets up a passing spec test to set up react and jest. 
   rails new try_again_with_webpack --webpack=react -T --skip-coffee -D postgresql
   cd try_again_with_webpack
   echo "gem 'rspec-rails'" >> Gemfile
@@ -36,8 +36,7 @@ react_with_jest() {
 
 
 
-
-# trying to set up enzyme with assortment of suggestions
+############# # trying to figure out enzyme with assortment of suggestions I found online
   yarn add react@16 react-dom@16
   yarn add --dev enzyme enzyme-adapter-react-16
   yarn add enzyme enzyme-adapter-react-16 jest-enzyme
